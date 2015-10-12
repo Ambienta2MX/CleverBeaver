@@ -1,0 +1,11 @@
+{
+  "main":"groovy:mx.ipn.ambienta2mx.hardAnt.HardAntVerticle",
+  "description":"Modulo Hard Ant, diseñado para guardar la información de las localidades en bases distribuidas usando Vertx, Groovy y Mongo. Para mayor información vease Ambienta2MX en github.",
+  "licenses": ["The Apache Software License Version 2.0"],
+  "author": "Reséndiz Arteaga Juan Alberto",
+  // Optional fields
+  "developers": ["Jimenez García Eduardo Gamaliel <egjimenezg@gmail.com>", "Reséndiz Arteaga Juan Alberto <jresendiz27@gmail>"],
+  "keywords": ["ipn", "escom", "trabajo", "terminal", "ambienta2mx", "open", "source"],
+  "homepage": "http://ambienta2mx.github.io",
+  "auto-redeploy": true
+}

@@ -1,0 +1,7 @@
+src/main/resources
+bin
+out/production/HardAnt
+out/test/HardAnt
+build/deps
+build/classes/main
+build/resources/main
