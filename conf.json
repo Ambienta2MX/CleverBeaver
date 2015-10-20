@@ -1,3 +1,85 @@
 {
+  "MX1": [
+    "Chihuahua",
+    "Oaxaca",
+    "Baja California Sur",
+    "Nuevo León",
+    "Sinaloa",
+    "Puebla",
+    "México",
+    "Aguascalientes"
+  ],
+  "MX2": [
+    "Sonora",
+    "Tamaulipas",
+    "Chiapas",
+    "Guerrero",
+    "Campeche",
+    "Guanajuato",
+    "Hidalgo",
+    "Morelos"
+  ],
+  "MX3": [
+    "Coahuila",
+    "Jalisco",
+    "Veracruz",
+    "San Luis Potosí",
+    "Quintana Roo",
+    "Nayarit",
+    "Querétaro",
+    "Tlaxcala"
+  ],
+  "MX4": [
+    "Durango",
+    "Zacatecas",
+    "Baja California",
+    "Michoacán",
+    "Yucatán",
+    "Tabasco",
+    "Colima",
+    "Distrito Federal"
+  ],
+  "Mongo1": {
+    "address": "Ambienta2MX.FastEagle.EventBus.MX1",
+    "host": "127.0.0.1",
+    "pool_size": 17,
+    "db_name": "Ambienta2MX-MX1",
+    "instances": 10
+  },
+  "Mongo2": {
+    "address": "Ambienta2MX.FastEagle.EventBus.MX2",
+    "host": "127.0.0.1",
+    "pool_size": 17,
+    "db_name": "Ambienta2MX-MX2",
+    "instances": 10
+  },
+  "Mongo3": {
+    "address": "Ambienta2MX.FastEagle.EventBus.MX3",
+    "host": "127.0.0.1",
+    "pool_size": 17,
+    "db_name": "Ambienta2MX-MX3",
+    "instances": 10
+  },
+  "Mongo4": {
+    "address": "Ambienta2MX.FastEagle.EventBus.MX4",
+    "host": "127.0.0.1",
+    "pool_size": 17,
+    "db_name": "Ambienta2MX-MX4",
+    "instances": 10
+  },
+  "WeatherVerticle": {
+    "http": {
+      "port": 7000,
+      "host": "0.0.0.0"
+    },
+    "instances": 10
+  },
+  "PollutionVerticle": {
+    "http": {
+      "port": 7001,
+      "host": "0.0.0.0"
+    },
+    "instances": 10
+  },
   "auto-redeploy": true
 }
