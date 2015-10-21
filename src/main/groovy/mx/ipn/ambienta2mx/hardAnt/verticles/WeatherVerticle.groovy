@@ -28,6 +28,6 @@ class WeatherVerticle extends Verticle {
         routeMatcher.post("/weather/save/",weatherRouter.saveWeatherByLatLon)
         routeMatcher.get("/weather/find/:lattitude/:longitude/:max", weatherRouter.findWeatherByLatLon)
         //
-        server.requestHandler(routeMatcher.asClosure()).listen(definedConfiguration.WeatherVerticle.http.port, definedConfiguration.WeatherVerticle.http.host);
+        server.requestHandler(routeMatcher.asClosure()).listen(definedConfiguration.weatherVerticle.http.port, definedConfiguration.weatherVerticle.http.host);
     }
 }
