@@ -10,23 +10,19 @@ class HardAntVerticle extends Verticle {
     def start() {
         definedConfiguration = container.getConfig();
         container.logger.info("Hard Ant verticle started");
-        // MX 1 databas
-        //container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo1)
-        // MX 2 databas
-        //container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo2)
-        // MX 3 databas
-        //container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo3)
-        // MX 4 databas
-        //container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo4)
+        // MX 1 database
+        container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo1)
+        // MX 2 database
+        container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo2)
+        // MX 3 database
+        container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo3)
+        // MX 4 database
+        container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo4)
         // Pollution verticle service
-        //container.deployVerticle("groovy:" + PollutionVerticle.class.getCanonicalName(), definedConfiguration)
-        // Google Maps Solver verticle
-        //container.deployVerticle("groovy:" + WeatherVerticle.class.getCanonicalName(), definedConfiguration)
-        /*
-        * Testing
-        * */
-        vertx.eventBus.send("Ambienta2MX.FastEagle.EventBus.Location")
-     }
+        container.deployVerticle("groovy:" + PollutionVerticle.class.getCanonicalName(), definedConfiguration)
+        // Weather verticle service
+        container.deployVerticle("groovy:" + WeatherVerticle.class.getCanonicalName(), definedConfiguration)
+    }
 
     def stop() {
         container.logger.info("Hard Ant main verticle has stopped!");
