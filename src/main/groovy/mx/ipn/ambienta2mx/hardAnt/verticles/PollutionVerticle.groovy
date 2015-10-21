@@ -28,6 +28,6 @@ class PollutionVerticle extends Verticle{
         routeMatcher.post("/pollution/save/",pollutionRouter.savePollutionByLatLon)
         routeMatcher.get("/pollution/find/:lattitude/:longitude/:max", pollutionRouter.findPollutionByLatLon)
         //
-        server.requestHandler(routeMatcher.asClosure()).listen(definedConfiguration.WeatherVerticle.http.port, definedConfiguration.WeatherVerticle.http.host);
+        server.requestHandler(routeMatcher.asClosure()).listen(definedConfiguration.pollutionVerticle.http.port, definedConfiguration.pollutionVerticle.http.host);
     }
 }
