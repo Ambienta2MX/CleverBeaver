@@ -1,3 +1,86 @@
 {
+  "databasesAddress": "Ambienta2MX.FastEagle.EventBus",
+  "states": {
+    "Chihuahua": "MX1",
+    "Oaxaca": "MX1",
+    "Baja California Sur": "MX1",
+    "Nuevo León": "MX1",
+    "Sinaloa": "MX1",
+    "Puebla": "MX1",
+    "México": "MX1",
+    "Aguascalientes": "MX1",
+    "Sonora": "MX2",
+    "Tamaulipas": "MX2",
+    "Chiapas": "MX2",
+    "Guerrero": "MX2",
+    "Campeche": "MX2",
+    "Guanajuato": "MX2",
+    "Hidalgo": "MX2",
+    "Morelos": "MX2",
+    "Coahuila": "MX3",
+    "Jalisco": "MX3",
+    "Veracruz": "MX3",
+    "San Luis Potosí": "MX3",
+    "Quintana Roo": "MX3",
+    "Nayarit": "MX3",
+    "Querétaro": "MX3",
+    "Tlaxcala": "MX3",
+    "Durango": "MX4",
+    "Zacatecas": "MX4",
+    "Baja California": "MX4",
+    "Michoacán": "MX4",
+    "Yucatán": "MX4",
+    "Tabasco": "MX4",
+    "Colima": "MX4",
+    "Distrito Federal": "MX4"
+  },
+  "mongo1": {
+    "address": "Ambienta2MX.FastEagle.EventBus.MX1",
+    "host": "127.0.0.1",
+    "pool_size": 17,
+    "db_name": "Ambienta2MX-MX1",
+    "instances": 10
+  },
+  "mongo2": {
+    "address": "Ambienta2MX.FastEagle.EventBus.MX2",
+    "host": "127.0.0.1",
+    "pool_size": 17,
+    "db_name": "Ambienta2MX-MX2",
+    "instances": 10
+  },
+  "mongo3": {
+    "address": "Ambienta2MX.FastEagle.EventBus.MX3",
+    "host": "127.0.0.1",
+    "pool_size": 17,
+    "db_name": "Ambienta2MX-MX3",
+    "instances": 10
+  },
+  "mongo4": {
+    "address": "Ambienta2MX.FastEagle.EventBus.MX4",
+    "host": "127.0.0.1",
+    "pool_size": 17,
+    "db_name": "Ambienta2MX-MX4",
+    "instances": 10
+  },
+  "weatherVerticle": {
+    "http": {
+      "port": 7000,
+      "host": "0.0.0.0"
+    },
+    "instances": 10
+  },
+  "pollutionVerticle": {
+    "http": {
+      "port": 7001,
+      "host": "0.0.0.0"
+    },
+    "instances": 10
+  },
+  "fastEagleService": {
+    "host": "http://localhost",
+    "port": 7777,
+    "longitudeLatitudeService": "/places/:longitude/:latitude/:maxDistance",
+    "nameService": "/places/?name=:name"
+  },
   "auto-redeploy": true
 }
