@@ -25,7 +25,7 @@ class WeatherVerticle extends Verticle {
         weatherRouter.eventBus = vertx.eventBus
         weatherRouter.container = this.container
         //
-        routeMatcher.post("/weather/save/",weatherRouter.saveWeather)
+        routeMatcher.post("/weather",weatherRouter.saveWeather)
         routeMatcher.get("/weather", weatherRouter.findWeatherBy)
 
         server.requestHandler(routeMatcher.asClosure()).listen(definedConfiguration.weatherVerticle.http.port, definedConfiguration.weatherVerticle.http.host);
