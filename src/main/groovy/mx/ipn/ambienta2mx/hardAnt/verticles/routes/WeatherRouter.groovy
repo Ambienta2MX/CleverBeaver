@@ -11,14 +11,15 @@ class WeatherRouter {
     def container
     def eventBus
 
-    def saveWeatherByLatLon = { request ->
+
+    def saveWeather = { request ->
         request.bodyHandler { body ->
             def weatherMap = new JsonSlurper().parseText("$body")
             def fastEagleService = definedConfiguration.fastEagleService
             String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.longitudeLatitudeService
             url = url.replace(":latitude", "$weatherMap.latitude")
             url = url.replace(":longitude", "$weatherMap.longitude")
-            url = url.replace(":maxDistance", "${request.params.maxDistance ?: 100}")
+            url = url.replace(":distance", "${request.params.distance ?: 100}")
             def urlObject = new URL(url)
             def place = new JsonSlurper().parse(urlObject)
             if (place) {
@@ -41,14 +42,23 @@ class WeatherRouter {
         }
     } as groovy.lang.Closure
 
+    def findWeatherBy = { request ->
+        if (request.params.name) {
+            return this.findWeatherByPlaceName(request)
+        } else {
+            return this.findWeatherByLatLon(request)
+        }
+    }
+
     def findWeatherByLatLon = { request ->
         def fastEagleService = definedConfiguration.fastEagleService
         String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.longitudeLatitudeService
         url = url.replace(":latitude", "$request.params.latitude")
         url = url.replace(":longitude", "$request.params.longitude")
-        url = url.replace(":maxDistance", "${request.params.max ?: 100}")
+        url = url.replace(":distance", "${request.params.distance ?: 100}")
         def coordinates = [Double.parseDouble(request.params.longitude ?: "0"), Double.parseDouble(request.params.latitude ?: "0")]
-        def maxDistance = Double.parseDouble(request.params.max ?: "100")
+        def maxDistance = Double.parseDouble(request.params.distance ?: "100")
+        def maxItems = Integer.parseInt(request.params.max ?: "10")
         def urlObject = new URL(url)
         def place = new JsonSlurper().parse(urlObject)
         if (place) {
@@ -61,7 +71,8 @@ class WeatherRouter {
                                             '$maxDistance': maxDistance
                                     ]
                             ]
-                    ]
+                    ],
+                    limit  : maxItems
             ]
             def database = definedConfiguration.states[place[0].state];
             eventBus.send("${definedConfiguration.databasesAddress}.${database}", query) { mongoResponse ->
@@ -80,11 +91,8 @@ class WeatherRouter {
         def fastEagleService = definedConfiguration.fastEagleService
         String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.nameService
         url = url.replace(":name", "$request.params.name")
-        println url
-        println url
-        println url
-        println url
         def urlObject = new URL(url)
+        def maxItems = Integer.parseInt(request.params.max ?: "10")
         def place = new JsonSlurper().parse(urlObject)
         if (place) {
             def query = [
@@ -95,7 +103,8 @@ class WeatherRouter {
                                             '$geometry': [type: "Point", coordinates: place[0].location.coordinates]
                                     ]
                             ]
-                    ]
+                    ],
+                    limit  : maxItems
             ]
             def database = definedConfiguration.states[place[0].state];
             eventBus.send("${definedConfiguration.databasesAddress}.${database}", query) { mongoResponse ->
@@ -109,4 +118,5 @@ class WeatherRouter {
             }
         }
     } as groovy.lang.Closure
+
 }

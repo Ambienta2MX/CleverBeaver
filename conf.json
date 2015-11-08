@@ -79,8 +79,8 @@
   "fastEagleService": {
     "host": "http://localhost",
     "port": 7777,
-    "longitudeLatitudeService": "/places/:longitude/:latitude/:maxDistance",
-    "nameService": "/places/?name=:name"
+    "longitudeLatitudeService": "/places?longitude=:longitude&latitude=:latitude&distance=:distance",
+    "nameService": "/places?name=:name"
   },
   "auto-redeploy": true
 }
