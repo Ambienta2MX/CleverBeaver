@@ -25,9 +25,9 @@ class PollutionVerticle extends Verticle{
         pollutionRouter.eventBus = vertx.eventBus
         pollutionRouter.container = this.container
         //
-        routeMatcher.post("/pollution",pollutionRouter.savePollution)
+        routeMatcher.post("/pollution/save/",pollutionRouter.savePollutionByLatLon)
         routeMatcher.get("/pollution", pollutionRouter.findPollutionBy)
-
+        //
         server.requestHandler(routeMatcher.asClosure()).listen(definedConfiguration.pollutionVerticle.http.port, definedConfiguration.pollutionVerticle.http.host);
     }
 }
