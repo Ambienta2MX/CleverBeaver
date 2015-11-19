@@ -42,10 +42,23 @@ class WeatherRouter {
     } as groovy.lang.Closure
 
     def findWeatherBy = { request ->
-        if (request.params.name) {
-            return this.findWeatherByPlaceName(request)
-        } else {
-            return this.findWeatherByLatLon(request)
+        /*Enabling CORS*/
+        request.response.putHeader("Access-Control-Allow-Origin", "${request.headers.origin}")
+        request.response.putHeader("Access-Control-Allow-Methods", "GET, OPTIONS, POST");
+        request.response.putHeader("Access-Control-Allow-Headers", "Content-Type, X-Requested-With, Accept");
+        request.response.putHeader("Content-Type", "application/json")
+        def response
+        try {
+            if (request.params.name) {
+                response = this.findWeatherByPlaceName(request)
+            } else {
+                response = this.findWeatherByLatLon(request)
+            }
+            return response
+        } catch (Exception e) {
+            println(e.getMessage())
+            println(e.getLocalizedMessage());
+            return request.response.end("{'error' : ${e.getLocalizedMessage()}")
         }
     }
 
@@ -62,8 +75,8 @@ class WeatherRouter {
         def place = new JsonSlurper().parse(urlObject)
         if (place) {
             def query = [
-                    action : 'find', collection: 'Weather',
-                    matcher: [
+                    action    : 'find', collection: 'Weather',
+                    matcher   : [
                             location: [
                                     '$near': [
                                             '$geometry'   : [type: "Point", coordinates: coordinates],
@@ -71,7 +84,8 @@ class WeatherRouter {
                                     ]
                             ]
                     ],
-                    limit  : maxItems
+                    limit     : maxItems,
+                    sort_query: [sampleDate: -1]
             ]
             def database = definedConfiguration.states[place[0].state];
             eventBus.send("${definedConfiguration.databasesAddress}.${database}", query) { mongoResponse ->
@@ -89,21 +103,22 @@ class WeatherRouter {
     def findWeatherByPlaceName = { request ->
         def fastEagleService = definedConfiguration.fastEagleService
         String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.nameService
-        url = url.replace(":name", "$request.params.name")
+        url = url.replace(":name", "${URLEncoder.encode(request.params.name)}")
         def urlObject = new URL(url)
         def maxItems = Integer.parseInt(request.params.max ?: "10")
         def place = new JsonSlurper().parse(urlObject)
         if (place) {
             def query = [
-                    action : 'find', collection: 'Weather',
-                    matcher: [
+                    action    : 'find', collection: 'Weather',
+                    matcher   : [
                             location: [
                                     '$near': [
                                             '$geometry': [type: "Point", coordinates: place[0].location.coordinates]
                                     ]
                             ]
                     ],
-                    limit: maxItems
+                    limit     : maxItems,
+                    sort_query: [sampleDate: -1]
             ]
             def database = definedConfiguration.states[place[0].state];
             eventBus.send("${definedConfiguration.databasesAddress}.${database}", query) { mongoResponse ->

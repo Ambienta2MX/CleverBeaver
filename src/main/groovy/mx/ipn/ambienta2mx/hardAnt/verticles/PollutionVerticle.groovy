@@ -27,6 +27,7 @@ class PollutionVerticle extends Verticle{
         //
         routeMatcher.post("/pollution/save/",pollutionRouter.savePollutionByLatLon)
         routeMatcher.get("/pollution", pollutionRouter.findPollutionBy)
+        routeMatcher.options("/pollution", pollutionRouter.findPollutionBy)
         //
         server.requestHandler(routeMatcher.asClosure()).listen(definedConfiguration.pollutionVerticle.http.port, definedConfiguration.pollutionVerticle.http.host);
     }

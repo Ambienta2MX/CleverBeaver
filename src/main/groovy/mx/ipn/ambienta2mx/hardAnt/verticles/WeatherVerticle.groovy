@@ -27,6 +27,7 @@ class WeatherVerticle extends Verticle {
         //
         routeMatcher.post("/weather/save/",weatherRouter.saveWeather)
         routeMatcher.get("/weather", weatherRouter.findWeatherBy)
+        routeMatcher.options("/weather", weatherRouter.findWeatherBy)
 
         //
         server.requestHandler(routeMatcher.asClosure()).listen(definedConfiguration.weatherVerticle.http.port, definedConfiguration.weatherVerticle.http.host);
