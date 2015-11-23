@@ -1,5 +1,5 @@
 {
-  "databasesAddress": "Ambienta2MX.FastEagle.EventBus",
+  "databasesAddress": "Ambienta2MX.HardAnt.EventBus",
   "states": {
     "Chihuahua": "MX1",
     "Oaxaca": "MX1",
@@ -8,6 +8,7 @@
     "Sinaloa": "MX1",
     "Puebla": "MX1",
     "México": "MX1",
+    "Estado de México": "MX1",
     "Aguascalientes": "MX1",
     "Sonora": "MX2",
     "Tamaulipas": "MX2",
@@ -20,6 +21,7 @@
     "Coahuila": "MX3",
     "Jalisco": "MX3",
     "Veracruz": "MX3",
+    "Veracruz de Ignacio de la Llave" :"MX3",
     "San Luis Potosí": "MX3",
     "Quintana Roo": "MX3",
     "Nayarit": "MX3",
@@ -36,46 +38,54 @@
     "Distrito Federal": "MX4"
   },
   "mongo1": {
-    "address": "Ambienta2MX.FastEagle.EventBus.MX1",
+    "address": "Ambienta2MX.HardAnt.EventBus.MX1",
     "host": "127.0.0.1",
     "pool_size": 2,
     "db_name": "Ambienta2MX-MX1",
-    "instances": 4
+    "instances": 2
   },
   "mongo2": {
-    "address": "Ambienta2MX.FastEagle.EventBus.MX2",
+    "address": "Ambienta2MX.HardAnt.EventBus.MX2",
     "host": "127.0.0.1",
     "pool_size": 2,
     "db_name": "Ambienta2MX-MX2",
-    "instances": 4
+    "instances": 2
   },
   "mongo3": {
-    "address": "Ambienta2MX.FastEagle.EventBus.MX3",
+    "address": "Ambienta2MX.HardAnt.EventBus.MX3",
     "host": "127.0.0.1",
     "pool_size": 2,
     "db_name": "Ambienta2MX-MX3",
-    "instances": 4
+    "instances": 2
   },
   "mongo4": {
-    "address": "Ambienta2MX.FastEagle.EventBus.MX4",
+    "address": "Ambienta2MX.HardAnt.EventBus.MX4",
     "host": "127.0.0.1",
     "pool_size": 2,
     "db_name": "Ambienta2MX-MX4",
-    "instances": 4
+    "instances": 2
+  },
+  "WeatherFinder": {
+    "address": "Ambienta2MX.HardAnt.EventBus.WeatherFinder",
+    "instances": 2
+  },
+  "PollutionFinder": {
+    "address": "Ambienta2MX.HardAnt.EventBus.PollutionFinder",
+    "instances": 2
   },
   "weatherVerticle": {
     "http": {
       "port": 7000,
       "host": "0.0.0.0"
     },
-    "instances": 4
+    "instances": 2
   },
   "pollutionVerticle": {
     "http": {
       "port": 7001,
       "host": "0.0.0.0"
     },
-    "instances": 4
+    "instances": 2
   },
   "fastEagleService": {
     "host": "http://localhost",
