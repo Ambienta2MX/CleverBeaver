@@ -1,5 +1,6 @@
 package mx.ipn.ambienta2mx.hardAnt
 
+import mx.ipn.ambienta2mx.hardAnt.services.WeatherService
 import mx.ipn.ambienta2mx.hardAnt.verticles.PollutionVerticle
 import mx.ipn.ambienta2mx.hardAnt.verticles.WeatherVerticle
 import org.vertx.groovy.platform.Verticle
@@ -18,6 +19,10 @@ class HardAntVerticle extends Verticle {
         container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo3)
         // MX 4 database
         container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo4)
+        // Weather Finder Verticle
+        container.deployVerticle("groovy:" + WeatherService.class.getCanonicalName(), definedConfiguration)
+        // Pollution Finder Verticle
+        // container.deployVerticle("groovy:" + WeatherService.class.getCanonicalName(), definedConfiguration)
         // Pollution verticle service
         container.deployVerticle("groovy:" + PollutionVerticle.class.getCanonicalName(), definedConfiguration)
         // Weather verticle service
