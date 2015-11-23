@@ -56,6 +56,8 @@ class PollutionRouter {
         url = url.replace(":name", "$request.params.name")
         def urlObject = new URL(url)
         def place = new JsonSlurper().parse(urlObject)
+        def maxDistance = Integer.parseInt(request.params.distance ?: "1000")
+        def coordinates = [place[0].location.coordinates[0], place[0].location.coordinates[1]]
         def maxItems = Integer.parseInt(request.params.max ?: "10")
         if (place) {
             def query = [
@@ -63,33 +65,36 @@ class PollutionRouter {
                     matcher   : [
                             location: [
                                     '$near': [
-                                            '$geometry': [type: "Point", coordinates: place[0].location.coordinates]
+                                            '$geometry': [type: "Point", coordinates:coordinates],
+                                            '$maxDistance': maxDistance
                                     ]
                             ]
                     ],
                     limit     : maxItems,
                     sort_query: [sampleDate: -1]
             ]
-            def database = definedConfiguration.states[place[0].state];
-            eventBus.send("${definedConfiguration.databasesAddress}.${database}", query) { mongoResponse ->
-                request.response.putHeader("Content-Type", "application/json")
-                if (mongoResponse.body.results) {
-                    request.response.end("${JsonOutput.toJson(mongoResponse.body.results)}")
+            eventBus.send("${definedConfiguration.WeatherFinder.address}", query) { message ->
+                println("Resolving Information from $coordinates")
+                if (message.body) {
+                    request.response.end("${JsonOutput.toJson(message.body.results)}")
                 } else {
                     request.response.end("${JsonOutput.toJson([])}")
                 }
-
             }
         }
     }
 
     def findPollutionByLatLon = { request ->
         def fastEagleService = definedConfiguration.fastEagleService
-        String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.nameService
-        url = url.replace(":name", "${URLEncoder.encode(request.params.name)}")
+        String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.longitudeLatitudeService
+        url = url.replace(":latitude", "$request.params.latitude")
+        url = url.replace(":longitude", "$request.params.longitude")
+        url = url.replace(":distance", "100") // for search purposes
+        def coordinates = [Double.parseDouble(request.params.longitude ?: "0"), Double.parseDouble(request.params.latitude ?: "0")]
+        def maxDistance = Integer.parseInt(request.params.distance ?: "100")
+        def maxItems = Integer.parseInt(request.params.max ?: "10")
         def urlObject = new URL(url)
         def place = new JsonSlurper().parse(urlObject)
-        def maxItems = Integer.parseInt(request.params.max ?: "10")
         if (place) {
             def query = [
                     action    : 'find', collection: 'Pollution',
@@ -104,15 +109,13 @@ class PollutionRouter {
                     limit     : maxItems,
                     sort_query: [sampleDate: -1]
             ]
-            def database = definedConfiguration.states[place[0].state];
-            eventBus.send("${definedConfiguration.databasesAddress}.${database}", query) { mongoResponse ->
-                request.response.putHeader("Content-Type", "application/json")
-                if (mongoResponse.body.results) {
-                    request.response.end("${JsonOutput.toJson(mongoResponse.body.results)}")
+            eventBus.send("${definedConfiguration.WeatherFinder.address}", query) { message ->
+                println("Resolving Information from $coordinates")
+                if (message.body) {
+                    request.response.end("${JsonOutput.toJson(message.body.results)}")
                 } else {
                     request.response.end("${JsonOutput.toJson([])}")
                 }
-
             }
         }
     }
