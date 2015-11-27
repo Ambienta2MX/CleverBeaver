@@ -48,7 +48,7 @@ class WeatherRouter {
         request.response.putHeader("Access-Control-Allow-Origin", "${request.headers.origin}")
         request.response.putHeader("Access-Control-Allow-Methods", "GET, OPTIONS, POST");
         request.response.putHeader("Access-Control-Allow-Headers", "Content-Type, X-Requested-With, Accept");
-        request.response.putHeader("Content-Type", "application/json")
+
         def response
         try {
             if (request.params.name) {
