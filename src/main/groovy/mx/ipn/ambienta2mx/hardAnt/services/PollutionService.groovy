@@ -56,6 +56,23 @@ class PollutionService extends Verticle implements FileManagement {
 
     @Override
     def generateCSVFile(ArrayList array) {
-        return null
+        String csvFileContent
+
+        List keys = []
+        List values = []
+        for (element in array[0]) {
+            keys.add(element.key)
+        }
+        csvFileContent = "${keys.join(",")}\n"
+
+        for (element in array) {
+            values.clear()
+            for (property in keys) {
+                values.add(element."$property" ?: " ")
+            }
+            csvFileContent += "${values.join(",")}\n"
+        }
+
+        return [text: csvFileContent, size: csvFileContent.length()]
     }
 }
