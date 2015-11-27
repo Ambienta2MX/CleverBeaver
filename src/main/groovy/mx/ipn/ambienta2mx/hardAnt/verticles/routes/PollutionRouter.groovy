@@ -13,7 +13,7 @@ class PollutionRouter {
     def eventBus
     PollutionService pollutionService
 
-    def savePollutionByLatLon(request) {
+    def savePollutionByLatLon =  { request ->
         request.bodyHandler { body ->
             def pollutionMap = new JsonSlurper().parseText("$body")
             def fastEagleService = definedConfiguration.fastEagleService
@@ -39,7 +39,7 @@ class PollutionRouter {
         }
     }
 
-    def findPollutionBy(request) {
+    def findPollutionBy =  { request ->
         /*Enabling CORS*/
         request.response.putHeader("Access-Control-Allow-Origin", "${request.headers.origin}");
         request.response.putHeader("Access-Control-Allow-Methods", "GET, OPTIONS, POST");
@@ -52,7 +52,7 @@ class PollutionRouter {
         }
     }
 
-    def findPollutionByPlaceName(request) {
+    def findPollutionByPlaceName =  { request ->
         def fastEagleService = definedConfiguration.fastEagleService
         String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.nameService
         url = url.replace(":name", "$request.params.name")
@@ -86,7 +86,7 @@ class PollutionRouter {
         }
     }
 
-    def findPollutionByLatLon(request) {
+    def findPollutionByLatLon =  { request ->
         def fastEagleService = definedConfiguration.fastEagleService
         String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.longitudeLatitudeService
         url = url.replace(":latitude", "$request.params.latitude")

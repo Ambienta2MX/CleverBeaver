@@ -3,7 +3,6 @@ package mx.ipn.ambienta2mx.hardAnt.services
 
 import org.vertx.groovy.platform.Verticle
 import mx.ipn.ambienta2mx.hardAnt.services.api.FileManagement
-
 /**
  * Created by alberto on 16/10/15.
  */
@@ -24,16 +23,16 @@ class PollutionService extends Verticle implements FileManagement {
                     eventBus.send("${definedConfiguration.databasesAddress}.MX3", message.body) { mx3 ->
                         eventBus.send("${definedConfiguration.databasesAddress}.MX4", message.body) { mx4 ->
                             List allPlaces = []
-                            for (element in mx1.body.results) {
+                            for(element in mx1.body.results) {
                                 allPlaces.add(element)
                             }
-                            for (element in mx2.body.results) {
+                            for(element in mx2.body.results) {
                                 allPlaces.add(element)
                             }
-                            for (element in mx3.body.results) {
+                            for(element in mx3.body.results) {
                                 allPlaces.add(element)
                             }
-                            for (element in mx4.body.results) {
+                            for(element in mx4.body.results) {
                                 allPlaces.add(element)
                             }
                             message.reply([results: allPlaces]);

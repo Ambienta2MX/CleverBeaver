@@ -1,12 +1,12 @@
 package mx.ipn.ambienta2mx.hardAnt.services
 
 import mx.ipn.ambienta2mx.hardAnt.services.api.FileManagement
-import mx.ipn.ambienta2mx.hardAnt.verticles.routes.WeatherRouter
 import org.vertx.groovy.platform.Verticle
 
 /**
  * Created by alberto on 16/10/15.
  */
+
 class WeatherService extends Verticle implements FileManagement {
 
     Map definedConfiguration
@@ -17,7 +17,7 @@ class WeatherService extends Verticle implements FileManagement {
         definedConfiguration = container.getConfig()
         eventBus = vertx.eventBus
         eventBus.registerHandler("$definedConfiguration.WeatherFinder.address") { message ->
-            println "Pollution Verticle working";
+            println "WeatherFinder Verticle working";
             eventBus.send("${definedConfiguration.databasesAddress}.MX1", message.body) { mx1 ->
                 eventBus.send("${definedConfiguration.databasesAddress}.MX2", message.body) { mx2 ->
                     eventBus.send("${definedConfiguration.databasesAddress}.MX3", message.body) { mx3 ->
@@ -67,7 +67,7 @@ class WeatherService extends Verticle implements FileManagement {
 
         for (element in array) {
             values.clear()
-            for(property in keys) {
+            for (property in keys) {
                 values.add(element."$property" ?: " ")
             }
             csvFileContent += "${values.join(",")}\n"
