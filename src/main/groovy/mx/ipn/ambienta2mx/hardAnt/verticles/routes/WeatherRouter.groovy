@@ -2,6 +2,7 @@ package mx.ipn.ambienta2mx.hardAnt.verticles.routes
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import mx.ipn.ambienta2mx.hardAnt.services.WeatherService
 
 /**
  * Created by alberto on 16/10/15.
@@ -10,8 +11,9 @@ class WeatherRouter {
     def definedConfiguration
     def container
     def eventBus
+    WeatherService weatherService
 
-    def saveWeather = { request ->
+    def saveWeather (request) {
         request.bodyHandler { body ->
             def weatherMap = new JsonSlurper().parseText("$body")
             def fastEagleService = definedConfiguration.fastEagleService
@@ -39,9 +41,9 @@ class WeatherRouter {
                 }
             }
         }
-    } as groovy.lang.Closure
+    }
 
-    def findWeatherBy = { request ->
+    def findWeatherBy (request) {
         /*Enabling CORS*/
         request.response.putHeader("Access-Control-Allow-Origin", "${request.headers.origin}")
         request.response.putHeader("Access-Control-Allow-Methods", "GET, OPTIONS, POST");
@@ -63,7 +65,7 @@ class WeatherRouter {
         }
     }
 
-    def findWeatherByLatLon = { request ->
+    def findWeatherByLatLon (request) {
         def fastEagleService = definedConfiguration.fastEagleService
         String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.longitudeLatitudeService
         url = url.replace(":latitude", "$request.params.latitude")
@@ -97,9 +99,9 @@ class WeatherRouter {
                 }
             }
         }
-    } as groovy.lang.Closure
+    }
 
-    def findWeatherByPlaceName = { request ->
+    def findWeatherByPlaceName (request) {
         def fastEagleService = definedConfiguration.fastEagleService
         String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.nameService
         url = url.replace(":name", "${URLEncoder.encode(request.params.name)}")
@@ -135,5 +137,5 @@ class WeatherRouter {
                 }
             }
         }
-    } as groovy.lang.Closure
+    }
 }
