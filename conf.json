@@ -40,52 +40,52 @@
   "mongo1": {
     "address": "Ambienta2MX.HardAnt.EventBus.MX1",
     "host": "127.0.0.1",
-    "pool_size": 2,
+    "pool_size": 1,
     "db_name": "Ambienta2MX-MX1",
-    "instances": 2
+    "instances": 1
   },
   "mongo2": {
     "address": "Ambienta2MX.HardAnt.EventBus.MX2",
     "host": "127.0.0.1",
-    "pool_size": 2,
+    "pool_size": 1,
     "db_name": "Ambienta2MX-MX2",
-    "instances": 2
+    "instances": 1
   },
   "mongo3": {
     "address": "Ambienta2MX.HardAnt.EventBus.MX3",
     "host": "127.0.0.1",
-    "pool_size": 2,
+    "pool_size": 1,
     "db_name": "Ambienta2MX-MX3",
-    "instances": 2
+    "instances": 1
   },
   "mongo4": {
     "address": "Ambienta2MX.HardAnt.EventBus.MX4",
     "host": "127.0.0.1",
-    "pool_size": 2,
+    "pool_size": 1,
     "db_name": "Ambienta2MX-MX4",
-    "instances": 2
+    "instances": 1
   },
   "WeatherFinder": {
     "address": "Ambienta2MX.HardAnt.EventBus.WeatherFinder",
-    "instances": 2
+    "instances": 1
   },
   "PollutionFinder": {
     "address": "Ambienta2MX.HardAnt.EventBus.PollutionFinder",
-    "instances": 2
+    "instances": 1
   },
   "weatherVerticle": {
     "http": {
       "port": 7000,
       "host": "0.0.0.0"
     },
-    "instances": 2
+    "instances": 1
   },
   "pollutionVerticle": {
     "http": {
       "port": 7001,
       "host": "0.0.0.0"
     },
-    "instances": 2
+    "instances": 1
   },
   "fastEagleService": {
     "host": "http://localhost",
