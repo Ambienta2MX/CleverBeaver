@@ -27,6 +27,8 @@ class WeatherRouter {
                 def mongoOperation = [action: 'save', collection: 'Weather']
                 weatherMap.location = place[0].location;
                 weatherMap.fullName = place[0].fullName
+                weatherMap.remove("latitude")
+                weatherMap.remove("longitude")
                 mongoOperation.document = weatherMap;
                 def database = definedConfiguration.states[place[0].state];
                 eventBus.send("${definedConfiguration.databasesAddress}.${database}", mongoOperation) { result ->
@@ -129,7 +131,7 @@ class WeatherRouter {
             ]
 
             eventBus.send("${definedConfiguration.WeatherFinder.address}", query) { message ->
-                println("Resolving Information from $coordinates, using place name")
+                println("Resolving Weather Information from $coordinates, using place name")
                 if (message.body) {
                     request.response.end("${JsonOutput.toJson(message.body.results)}")
                 } else {

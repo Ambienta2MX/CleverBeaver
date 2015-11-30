@@ -11,7 +11,7 @@ class PollutionRouter {
     def definedConfiguration
     def container
     def eventBus
-    PollutionService pollutionService
+
 
     def savePollutionByLatLon =  { request ->
         request.bodyHandler { body ->
@@ -27,6 +27,8 @@ class PollutionRouter {
                 def mongoOperation = [action: 'save', collection: 'Pollution']
                 pollutionMap.location = place[0].location;
                 pollutionMap.fullName = place[0].fullName
+                pollutionMap.remove("latitude")
+                pollutionMap.remove("longitude")
                 mongoOperation.document = pollutionMap;
                 def database = definedConfiguration.states[place[0].state];
                 eventBus.send("${definedConfiguration.databasesAddress}.${database}", mongoOperation) { result ->
@@ -76,7 +78,7 @@ class PollutionRouter {
                     sort_query: [sampleDate: -1]
             ]
             eventBus.send("${definedConfiguration.WeatherFinder.address}", query) { message ->
-                println("Resolving Information from $coordinates")
+                println("Resolving Polluton Information from $coordinates using place name")
                 if (message.body) {
                     request.response.end("${JsonOutput.toJson(message.body.results)}")
                 } else {
@@ -111,8 +113,8 @@ class PollutionRouter {
                     limit     : maxItems,
                     sort_query: [sampleDate: -1]
             ]
-            eventBus.send("${definedConfiguration.WeatherFinder.address}", query) { message ->
-                println("Resolving Information from $coordinates")
+            eventBus.send("${definedConfiguration.PollutionFinder.address}", query) { message ->
+                println("Resolving Pollution Information from $coordinates")
                 if (message.body) {
                     request.response.end("${JsonOutput.toJson(message.body.results)}")
                 } else {
