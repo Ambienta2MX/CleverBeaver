@@ -22,7 +22,7 @@ class HardAntVerticle extends Verticle {
         // Weather Finder Verticle
         container.deployVerticle("groovy:" + WeatherService.class.getCanonicalName(), definedConfiguration)
         // Pollution Finder Verticle
-        // container.deployVerticle("groovy:" + WeatherService.class.getCanonicalName(), definedConfiguration)
+        container.deployVerticle("groovy:" + WeatherService.class.getCanonicalName(), definedConfiguration)
         // Pollution verticle service
         container.deployVerticle("groovy:" + PollutionVerticle.class.getCanonicalName(), definedConfiguration)
         // Weather verticle service

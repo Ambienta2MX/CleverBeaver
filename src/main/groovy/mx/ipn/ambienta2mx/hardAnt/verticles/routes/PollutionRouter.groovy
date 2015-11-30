@@ -14,13 +14,14 @@ class PollutionRouter {
 
 
     def savePollutionByLatLon =  { request ->
+        println "Saving pollution by lat/lng"
         request.bodyHandler { body ->
             def pollutionMap = new JsonSlurper().parseText("$body")
             def fastEagleService = definedConfiguration.fastEagleService
             String url = fastEagleService.host + ":" + fastEagleService.port + fastEagleService.longitudeLatitudeService
             url = url.replace(":latitude", "$pollutionMap.latitude")
             url = url.replace(":longitude", "$pollutionMap.longitude")
-            url = url.replace(":maxDistance", "${request.params.maxDistance ?: 100}")
+            url = url.replace(":distance", "${request.params.maxDistance ?: 100}")
             def urlObject = new URL(url)
             def place = new JsonSlurper().parse(urlObject)
             if (place) {
@@ -32,7 +33,10 @@ class PollutionRouter {
                 mongoOperation.document = pollutionMap;
                 def database = definedConfiguration.states[place[0].state];
                 eventBus.send("${definedConfiguration.databasesAddress}.${database}", mongoOperation) { result ->
-                    request.response.end("${JsonOutput.toJson(result)}")
+                    pollutionMap.id = result.body.id
+                    def list = []
+                    list.add(pollutionMap)
+                    request.response.end("${JsonOutput.toJson(list)}")
                 }
             } else {
                 request.response.code = 500;
@@ -77,7 +81,7 @@ class PollutionRouter {
                     limit     : maxItems,
                     sort_query: [sampleDate: -1]
             ]
-            eventBus.send("${definedConfiguration.WeatherFinder.address}", query) { message ->
+            eventBus.send("${definedConfiguration.PollutionFinder.address}", query) { message ->
                 println("Resolving Polluton Information from $coordinates using place name")
                 if (message.body) {
                     request.response.end("${JsonOutput.toJson(message.body.results)}")
