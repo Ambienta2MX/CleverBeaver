@@ -65,24 +65,13 @@
     "db_name": "Ambienta2MX-MX4",
     "instances": 1
   },
-  "WeatherFinder": {
-    "address": "Ambienta2MX.HardAnt.EventBus.WeatherFinder",
+  "DataTypeFinder": {
+    "address": "Ambienta2MX.HardAnt.EventBus.DataTypeFinder",
     "instances": 1
   },
-  "PollutionFinder": {
-    "address": "Ambienta2MX.HardAnt.EventBus.PollutionFinder",
-    "instances": 1
-  },
-  "weatherVerticle": {
+  "DataTypeVerticle": {
     "http": {
       "port": 7000,
-      "host": "0.0.0.0"
-    },
-    "instances": 1
-  },
-  "pollutionVerticle": {
-    "http": {
-      "port": 7001,
       "host": "0.0.0.0"
     },
     "instances": 1
