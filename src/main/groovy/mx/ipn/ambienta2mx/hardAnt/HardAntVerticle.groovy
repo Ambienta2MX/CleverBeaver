@@ -1,8 +1,7 @@
 package mx.ipn.ambienta2mx.hardAnt
 
-import mx.ipn.ambienta2mx.hardAnt.services.WeatherService
-import mx.ipn.ambienta2mx.hardAnt.verticles.PollutionVerticle
-import mx.ipn.ambienta2mx.hardAnt.verticles.WeatherVerticle
+import mx.ipn.ambienta2mx.hardAnt.services.DataTypeService
+import mx.ipn.ambienta2mx.hardAnt.verticles.DataTypeVerticle
 import org.vertx.groovy.platform.Verticle
 
 class HardAntVerticle extends Verticle {
@@ -19,14 +18,10 @@ class HardAntVerticle extends Verticle {
         container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo3)
         // MX 4 database
         container.deployModule('io.vertx~mod-mongo-persistor~2.1.0', definedConfiguration.mongo4)
-        // Weather Finder Verticle
-        container.deployVerticle("groovy:" + WeatherService.class.getCanonicalName(), definedConfiguration)
-        // Pollution Finder Verticle
-        container.deployVerticle("groovy:" + WeatherService.class.getCanonicalName(), definedConfiguration)
-        // Pollution verticle service
-        container.deployVerticle("groovy:" + PollutionVerticle.class.getCanonicalName(), definedConfiguration)
-        // Weather verticle service
-        container.deployVerticle("groovy:" + WeatherVerticle.class.getCanonicalName(), definedConfiguration)
+        // DataType Finder Verticle
+        container.deployVerticle("groovy:" + DataTypeService.class.getCanonicalName(), definedConfiguration)
+        // DataType Verticle
+        container.deployVerticle("groovy:" + DataTypeVerticle.class.getCanonicalName(), definedConfiguration)
     }
 
     def stop() {
