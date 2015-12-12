@@ -7,7 +7,7 @@ import mx.ipn.ambienta2mx.hardAnt.services.WeatherService
 /**
  * Created by alberto on 16/10/15.
  */
-class WeatherRouter {
+class DataTypeRouter {
     def definedConfiguration
     def container
     def eventBus

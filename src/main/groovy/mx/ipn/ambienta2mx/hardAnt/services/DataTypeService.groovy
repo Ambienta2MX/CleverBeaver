@@ -7,7 +7,7 @@ import org.vertx.groovy.platform.Verticle
  * Created by alberto on 16/10/15.
  */
 
-class WeatherService extends Verticle implements FileManagement {
+class DataTypeService extends Verticle implements FileManagement {
 
     Map definedConfiguration
     def eventBus

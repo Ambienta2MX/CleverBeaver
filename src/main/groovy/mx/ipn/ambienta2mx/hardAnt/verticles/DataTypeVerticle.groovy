@@ -7,7 +7,7 @@ import org.vertx.groovy.platform.Verticle
 /**
  * Created by alberto on 16/10/15.
  */
-class WeatherVerticle extends Verticle {
+class DataTypeVerticle extends Verticle {
     Map definedConfiguration
     def server
     RouteMatcher routeMatcher
