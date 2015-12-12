@@ -1,9 +1,8 @@
 package mx.ipn.ambienta2mx.hardAnt
 
 import mx.ipn.ambienta2mx.hardAnt.services.PollutionService
-import mx.ipn.ambienta2mx.hardAnt.services.WeatherService
+import mx.ipn.ambienta2mx.hardAnt.services.DataTypeService
 import mx.ipn.ambienta2mx.hardAnt.services.api.FileManagement
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import java.lang.Void as Should
@@ -15,7 +14,7 @@ class FileManagementSpec extends Specification {
     @Shared service = null
     Should "generate a csv file from given object's array (Weather)"() {
         given:
-        service = (FileManagement) new WeatherService()
+        service = (FileManagement) new DataTypeService()
         expect:
         service.generateCSVFile(array).text == fileContent
         where:
