@@ -16,8 +16,8 @@ class DataTypeService extends Verticle implements FileManagement {
     def start() {
         definedConfiguration = container.getConfig()
         eventBus = vertx.eventBus
-        eventBus.registerHandler("$definedConfiguration.WeatherFinder.address") { message ->
-            println "WeatherFinder Verticle working";
+        eventBus.registerHandler("$definedConfiguration.DataTypeFinder.address") { message ->
+            println "DataType Finder Verticle working";
             eventBus.send("${definedConfiguration.databasesAddress}.MX1", message.body) { mx1 ->
                 eventBus.send("${definedConfiguration.databasesAddress}.MX2", message.body) { mx2 ->
                     eventBus.send("${definedConfiguration.databasesAddress}.MX3", message.body) { mx3 ->
