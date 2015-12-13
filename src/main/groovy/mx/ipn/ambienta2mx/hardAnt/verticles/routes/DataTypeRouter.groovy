@@ -92,10 +92,11 @@ class DataTypeRouter {
                     limit     : maxItems,
                     sort_query: [sampleDate: -1]
             ]
-            eventBus.send("${definedConfiguration.DataTypeFinder.address}", query) { message ->
+            def message = [query: query, latest: request.params.latest ?: false]
+            eventBus.send("${definedConfiguration.DataTypeFinder.address}", message) { dataFinderMessage ->
                 println("Resolving Information from $coordinates")
-                if (message.body) {
-                    return request.response.end("${new DataTypeService().generateResponseType(message.body.results, request.params.format).text}")
+                if (dataFinderMessage.body) {
+                    return request.response.end("${new DataTypeService().generateResponseType(dataFinderMessage.body.results, request.params.format).text}")
                 }
             }
         }
@@ -127,11 +128,11 @@ class DataTypeRouter {
                     limit     : maxItems,
                     sort_query: [sampleDate: -1]
             ]
-
-            eventBus.send("${definedConfiguration.DataTypeFinder.address}", query) { message ->
+            def message = [query: query, latest: request.params.latest ?: false]
+            eventBus.send("${definedConfiguration.DataTypeFinder.address}", message) { dataFinderMessage ->
                 println("Resolving DataType Information from $coordinates, using place name")
-                if (message.body) {
-                    return request.response.end("${new DataTypeService().generateResponseType(message.body.results, request.params.format).text}")
+                if (dataFinderMessage.body) {
+                    return request.response.end("${new DataTypeService().generateResponseType(dataFinderMessage.body.results, request.params.format).text}")
                 }
             }
         }
