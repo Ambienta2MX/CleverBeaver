@@ -2,6 +2,7 @@ package mx.ipn.ambienta2mx.hardAnt.verticles.routes
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import mx.ipn.ambienta2mx.hardAnt.services.DataTypeService
 
 /**
  * Created by alberto on 16/10/15.
@@ -48,15 +49,16 @@ class DataTypeRouter {
         request.response.putHeader("Access-Control-Allow-Origin", "${request.headers.origin}")
         request.response.putHeader("Access-Control-Allow-Methods", "GET, OPTIONS, POST");
         request.response.putHeader("Access-Control-Allow-Headers", "Content-Type, X-Requested-With, Accept");
-
-        def response
+        request.response.putHeader("Content-Type", "application/${request.params.format ?: "json"}")
         try {
+
             if (request.params.name) {
-                response = this.findDataTypeByPlaceName(request)
+                return this.findDataTypeByPlaceName(request)
             } else {
-                response = this.findDataTypeByLatLon(request)
+                return this.findDataTypeByLatLon(request)
             }
-            return response
+
+
         } catch (Exception e) {
             e.printStackTrace()
             println(e.getMessage())
@@ -71,10 +73,6 @@ class DataTypeRouter {
         url = url.replace(":latitude", "$request.params.latitude")
         url = url.replace(":longitude", "$request.params.longitude")
         url = url.replace(":distance", "100") // for search purposes
-        println url
-        println request.params.dataType
-        println request.params.dataType
-        println request.params.dataType
         def coordinates = [Double.parseDouble(request.params.longitude ?: "0"), Double.parseDouble(request.params.latitude ?: "0")]
         def maxDistance = Integer.parseInt(request.params.distance ?: "100")
         def maxItems = Integer.parseInt(request.params.max ?: "10")
@@ -97,9 +95,7 @@ class DataTypeRouter {
             eventBus.send("${definedConfiguration.DataTypeFinder.address}", query) { message ->
                 println("Resolving Information from $coordinates")
                 if (message.body) {
-                    return request.response.end("${JsonOutput.toJson(message.body.results)}")
-                } else {
-                    return request.response.end("${JsonOutput.toJson([])}")
+                    return request.response.end("${new DataTypeService().generateResponseType(message.body.results, request.params.format).text}")
                 }
             }
         }
@@ -135,9 +131,7 @@ class DataTypeRouter {
             eventBus.send("${definedConfiguration.DataTypeFinder.address}", query) { message ->
                 println("Resolving DataType Information from $coordinates, using place name")
                 if (message.body) {
-                    return request.response.end("${JsonOutput.toJson(message.body.results)}")
-                } else {
-                    return request.response.end("${JsonOutput.toJson([])}")
+                    return request.response.end("${new DataTypeService().generateResponseType(message.body.results, request.params.format).text}")
                 }
             }
         }
