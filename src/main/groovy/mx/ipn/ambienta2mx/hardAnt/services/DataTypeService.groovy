@@ -14,6 +14,7 @@ class DataTypeService extends Verticle implements FileManagement {
 
     Map definedConfiguration
     def eventBus
+    def ignoredFields = ['_id', 'location', '$oid']
 
     @Override
     def start() {
@@ -53,17 +54,29 @@ class DataTypeService extends Verticle implements FileManagement {
     def generateCSVFile(List array) {
         String csvFileContent
 
-        List keys = []
+        Set keys = []
         List values = []
         for (element in array[0]) {
-            keys.add(element.key)
+            if (!(element.key in ignoredFields)) {
+                keys.add(element.key)
+            }
+            if (element.key == 'location') {
+                keys.add('longitude')
+                keys.add('latitude')
+            }
         }
         csvFileContent = "${keys.join(",")}\n"
 
         for (element in array) {
             values.clear()
             for (property in keys) {
-                values.add("\"" + element."${property}" + "\"" ?: " ")
+                if (property == 'latitude') {
+                    values.add("\"" + element."location".coordinates[1] + "\"" ?: " ")
+                } else if (property == 'longitude') {
+                    values.add("\"" + element."location".coordinates[0] + "\"" ?: " ")
+                } else {
+                    values.add("\"" + element."${property}" + "\"" ?: " ")
+                }
             }
             csvFileContent += "${values.join(",")}\n"
         }
@@ -81,7 +94,10 @@ class DataTypeService extends Verticle implements FileManagement {
                 array.collect { element ->
                     item {
                         element.each { key, value ->
-                            "$key" { value instanceof Map ? value.collect(owner) : mkp.yield(value) }
+                            if (!(key in ignoredFields)) {
+                                "$key" { value instanceof Map ? value.collect(owner) : mkp.yield(value) }
+                            }
+
                         }
                     }
                 }
