@@ -21,7 +21,7 @@
     "Coahuila": "MX3",
     "Jalisco": "MX3",
     "Veracruz": "MX3",
-    "Veracruz de Ignacio de la Llave" :"MX3",
+    "Veracruz de Ignacio de la Llave": "MX3",
     "San Luis Potosí": "MX3",
     "Quintana Roo": "MX3",
     "Nayarit": "MX3",
@@ -82,5 +82,6 @@
     "longitudeLatitudeService": "/places?longitude=:longitude&latitude=:latitude&distance=:distance",
     "nameService": "/places?name=:name"
   },
-  "auto-redeploy": true
+  "auto-redeploy": true,
+  "expirationHour": 4
 }
