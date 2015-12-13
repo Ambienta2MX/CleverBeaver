@@ -48,8 +48,14 @@ class DataTypeService extends Verticle implements FileManagement {
 
     @Override
     def generateJsonFile(List array) {
-        String jsonFileContent = JsonOutput.toJson(array)
-        return [text: jsonFileContent, size: jsonFileContent.length()]
+        if (array) {
+            String jsonFileContent = JsonOutput.toJson(array)
+            return [text: jsonFileContent, size: jsonFileContent.length()]
+        } else {
+            return [text: "[]", size: 2]
+        }
+
+
     }
 
     @Override
@@ -111,18 +117,14 @@ class DataTypeService extends Verticle implements FileManagement {
 
     def generateResponseType(List array, String type = "json") {
         Map response
-        if (array) {
-            if (type == "xml") {
-                response = generateXMLFile(array)
-            } else if (type == "csv") {
-                response = generateCSVFile(array)
-            } else {
-                response = generateJsonFile(array)
-            }
-            return response
+        if (type == "xml") {
+            response = generateXMLFile(array)
+        } else if (type == "csv") {
+            response = generateCSVFile(array)
         } else {
-            return [text: "", size: 0]
+            response = generateJsonFile(array)
         }
+        return response
     }
 
     List latestFilter(List elements, boolean enabled) {
