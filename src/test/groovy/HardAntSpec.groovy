@@ -1,6 +1,9 @@
+import spock.lang.Ignore
+
 /**
  * Created by alberto on 4/25/15.
  */
+@Ignore
 class HardAntSpec extends spock.lang.Specification {
 
     def "Should get information from a place via Lat/Lon and a radius"() {
