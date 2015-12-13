@@ -1,5 +1,8 @@
 package mx.ipn.ambienta2mx.hardAnt.services
 
+import groovy.json.JsonOutput
+import groovy.time.TimeCategory
+import groovy.xml.MarkupBuilder
 import mx.ipn.ambienta2mx.hardAnt.services.api.FileManagement
 import org.vertx.groovy.platform.Verticle
 
@@ -50,12 +53,13 @@ class DataTypeService extends Verticle implements FileManagement {
     }
 
     @Override
-    def generateJsonFile(ArrayList array) {
-        return null
+    def generateJsonFile(List array) {
+        String jsonFileContent = JsonOutput.toJson(array)
+        return [text: jsonFileContent, size: jsonFileContent.length()]
     }
 
     @Override
-    def generateCSVFile(ArrayList array) {
+    def generateCSVFile(List array) {
         String csvFileContent
 
         List keys = []
@@ -68,11 +72,47 @@ class DataTypeService extends Verticle implements FileManagement {
         for (element in array) {
             values.clear()
             for (property in keys) {
-                values.add(element."$property" ?: " ")
+                values.add("\"" + element."${property}" + "\"" ?: " ")
             }
             csvFileContent += "${values.join(",")}\n"
         }
 
         return [text: csvFileContent, size: csvFileContent.length()]
+    }
+
+    @Override
+    def generateXMLFile(List array) {
+        def writer = new StringWriter()
+        def xml = new MarkupBuilder(writer)
+
+        xml.with {
+            elements {
+                array.collect { element ->
+                    item {
+                        element.each { key, value ->
+                            "$key" { value instanceof Map ? value.collect(owner) : mkp.yield(value) }
+                        }
+                    }
+                }
+            }
+        }
+        String xmlFileContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".concat(writer.toString())
+        return [text: xmlFileContent, size: xmlFileContent.length()]
+    }
+
+    def generateResponseType(List array, String type = "json") {
+        Map response
+        if (array) {
+            if (type == "xml") {
+                response = generateXMLFile(array)
+            } else if (type == "csv") {
+                response = generateCSVFile(array)
+            } else {
+                response = generateJsonFile(array)
+            }
+            return response
+        } else {
+            return [text: "", size: 0]
+        }
     }
 }
