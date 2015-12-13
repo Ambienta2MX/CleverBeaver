@@ -5,6 +5,7 @@ import groovy.time.TimeCategory
 import groovy.xml.MarkupBuilder
 import mx.ipn.ambienta2mx.hardAnt.services.api.FileManagement
 import org.vertx.groovy.platform.Verticle
+import java.text.SimpleDateFormat
 
 /**
  * Created by alberto on 16/10/15.
@@ -15,6 +16,7 @@ class DataTypeService extends Verticle implements FileManagement {
     Map definedConfiguration
     def eventBus
     def ignoredFields = ['_id', 'location', '$oid']
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm")
 
     @Override
     def start() {
@@ -128,8 +130,7 @@ class DataTypeService extends Verticle implements FileManagement {
             use(TimeCategory) {
                 Date currentDate = new Date();
                 return elements.findAll { element ->
-                    //TODO verify date format before saving it into the database
-                    Date expirationDate = element.sampleDate + definedConfiguration.expirationHour.hours
+                    Date expirationDate = formatter.parse("${element.dateCreated}") + definedConfiguration.expirationHour.hours
                     return expirationDate < currentDate
                 }
             }
